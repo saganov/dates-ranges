@@ -17,7 +17,7 @@ class AppRoutes
                 'route_name' => ['GET', '/foo', 'MyController::foo'],
             ],
             '/api/v1' => [
-                'get_ranges'   => ['GET',    '/ranges/{range}',        'Ranges::list'],
+                'get_ranges'   => ['GET',    '/ranges/',        'Ranges::list'],
                 'save_range'   => ['PUT',    '/ranges/',        'Ranges::save'],
                 'delete_range' => ['DELETE', '/ranges/{range}', 'Ranges::delete'],
             ]
