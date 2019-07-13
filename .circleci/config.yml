@@ -58,4 +58,5 @@ jobs:
       #- run: ./vendor/bin/phpunit
       #- run: ./vendor/bin/codecept build
       - run: cp tests/acceptance.suite.example.yml tests/acceptance.suite.yml
+      - run: cp tests/api.suite.example.yml tests/api.suite.yml
       - run: ./vendor/bin/codecept run
