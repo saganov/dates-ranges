@@ -4,3 +4,12 @@ modules:
         - Asserts
         - Db
         - \Helper\Functional
+    config:
+        Db:
+            dsn: 'mysql:host=127.0.0.1;dbname=ranges;charset=utf8'
+            user: 'root'
+            password: 'root'
+            populate: true
+            cleanup: false
+            reconnect: false
+            populator: vendor/bin/phinx migrate -e circleci
