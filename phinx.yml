@@ -7,10 +7,10 @@ environments:
     default_database: development
     production:
         adapter: mysql
-        host: '%%DB_HOST%%'
-        name: '%%DB_NAME%%'
-        user: '%%DB_USER%%'
-        pass: '%%DB_PASS%%'
+        host: '%%PHINX_DB_HOST%%'
+        name: '%%PHINX_DB_NAME%%'
+        user: '%%PHINX_DB_USER%%'
+        pass: '%%PHINX_DB_PASS%%'
         port: 3306
         charset: utf8
 
