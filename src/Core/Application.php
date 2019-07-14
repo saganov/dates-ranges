@@ -7,7 +7,6 @@ use ReflectionException;
 use ReflectionMethod;
 use ReflectionParameter;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
@@ -31,12 +30,16 @@ class Application
      */
     public function run()
     {
-        $context = new RequestContext();
         $request = Request::createFromGlobals();
-        $context->fromRequest($request);
-        $matcher = new UrlMatcher($this->routes->get(), $context);
+        $request->attributes->add(
+            (new UrlMatcher(
+                $this->routes->get(),
+                (new RequestContext())->fromRequest($request))
+            )->match($request->getPathInfo())
+        );
         try {
-            $this->runAction($matcher->match($context->getPathInfo()))->prepare($request)->send();
+            $response = call_user_func($this->controller($request), $this->arguments($request));
+            $response->prepare($request)->send();
         } catch (ResourceNotFoundException $e) {
             echo $e->getMessage();
         } catch (ReflectionException $e) {
@@ -45,29 +48,32 @@ class Application
     }
 
     /**
-     * @param $parameters
-     * @return Response
+     * @param Request $request
+     * @return Callable
+     */
+    private function controller(Request $request)
+    {
+        $controller = $request->get('_controller');
+        return [new $controller, $request->get('_action')];
+    }
+
+    /**
+     * @param Request $request
+     * @return array
      * @throws ReflectionException
      */
-    private function runAction($parameters): Response
+    private function arguments(Request $request)
     {
-        $controller = $parameters['_controller'];
-        $action     = $parameters['_action'];
-        $reflectionMethod = new ReflectionMethod($controller, $action);
-        $pass = array();
-        foreach($reflectionMethod->getParameters() as $param)
-        {
+        $reflectionMethod = new ReflectionMethod($request->get('_controller'), $request->get('_action'));
+        $arguments = array();
+        foreach ($reflectionMethod->getParameters() as $param) {
             /* @var $param ReflectionParameter */
-            if(isset($parameters[$param->getName()])) {
-                $pass[] = $parameters[$param->getName()];
+            if ($request->attributes->has($param->getName())) {
+                $arguments[] = $request->get($param->getName());
             } else {
-                $pass[] = $param->getDefaultValue();
+                $arguments[] = $param->getDefaultValue();
             }
         }
-        $response = $reflectionMethod->invokeArgs(new $controller(), $pass);
-        if (!is_a($response, Response::class)) {
-            $response = new Response(json_encode($response, true));
-        }
-        return $response;
+        return $arguments;
     }
 }

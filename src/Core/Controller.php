@@ -4,7 +4,7 @@ namespace DateRange\Core;
 
 use Symfony\Component\HttpFoundation\Response;
 
-class Controller
+abstract class Controller
 {
     /**
      * @param $body
