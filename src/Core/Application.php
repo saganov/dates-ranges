@@ -16,13 +16,17 @@ class Application
     /** @var AppRoutes */
     private $routes;
 
+    private $services;
+
     /**
      * Application constructor.
      * @param AppRoutes $routes
+     * @param ServiceLocator $services
      */
-    public function __construct(AppRoutes $routes)
+    public function __construct(AppRoutes $routes, ServiceLocator $services)
     {
         $this->routes = $routes;
+        $this->services = $services;
     }
 
     /**
@@ -54,7 +58,7 @@ class Application
     private function controller(Request $request)
     {
         $controller = $request->get('_controller');
-        return [new $controller, $request->get('_action')];
+        return [new $controller($this->services), $request->get('_action')];
     }
 
     /**

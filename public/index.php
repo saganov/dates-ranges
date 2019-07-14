@@ -8,6 +8,7 @@
  */
 
 use DateRange\Config\AppRoutes;
+use DateRange\Config\ServiceProvider;
 use DateRange\Core\Application;
 
 /*
@@ -23,5 +24,5 @@ use DateRange\Core\Application;
 */
 require __DIR__.'/../vendor/autoload.php';
 
-$app = new Application(new AppRoutes());
+$app = new Application(new AppRoutes(), new ServiceProvider());
 $app->run();

@@ -2,4 +2,5 @@
 /vendor/
 /tests/acceptance.suite.yml
 /tests/api.suite.yml
+/tests/functional.suite.yml
 
