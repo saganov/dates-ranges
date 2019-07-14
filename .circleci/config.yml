@@ -52,15 +52,16 @@ jobs:
 #          paths:
 #            - node_modules
 
+      - run: docker-php-ext-install mysqli # && docker-php-ext-enable mysqli
       # prepare the database
       #- run: touch storage/testing.sqlite
       #- run: php artisan migrate --env=testing --database=sqlite_testing --force
-      - run : ./vendor/bin/phinx migrate -e circleci
+      - run: ./vendor/bin/phinx migrate -e circleci
 
       # run tests with phpunit or codecept
       #- run: ./vendor/bin/phpunit
       #- run: ./vendor/bin/codecept build
       - run: cp tests/acceptance.suite.example.yml tests/acceptance.suite.yml
       - run: cp tests/api.suite.example.yml tests/api.suite.yml
-      - run: cp tests/functional.suite.example.yml tests/functional.suite.yml
+      #- run: cp tests/functional.suite.example.yml tests/functional.suite.yml
       - run: ./vendor/bin/codecept run
