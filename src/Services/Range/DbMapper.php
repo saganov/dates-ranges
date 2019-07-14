@@ -5,6 +5,7 @@ namespace DateRange\Services\Range;
 use DateRange\Core\Collection;
 use DateRange\Core\Database;
 use DateRange\Core\Row;
+use Exception;
 
 class DbMapper
 {
@@ -19,25 +20,19 @@ class DbMapper
         $this->dbConnection = $connection;
     }
 
+    /**
+     * @return Collection
+     * @throws Exception
+     */
     public function list()
     {
-        return $this->collection(
-            [
-                [
-                    'start' => 'Y-m-d',
-                    'end' => 'Y-m-d',
-                    'price' => 15
-                ],
-                [
-                    'start' => 'Y-m-d',
-                    'end' => 'Y-m-d',
-                    'price' => 25
-                ]
-            ]
-        );
-        //return $this->dbConnection->query('SELECT * FROM ranges');
+        return $this->collection($this->dbConnection->query('SELECT * FROM ranges'));
     }
 
+    /**
+     * @param array $data
+     * @return Collection
+     */
     private function collection(array $data)
     {
         $collection = new Collection();
@@ -47,6 +42,10 @@ class DbMapper
         return $collection;
     }
 
+    /**
+     * @param Row $row
+     * @return Range
+     */
     private function entity(Row $row)
     {
         return new Range($row->get(self::START), $row->get(self::END), $row->get(self::PRICE));

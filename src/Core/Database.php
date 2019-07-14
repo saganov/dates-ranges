@@ -4,6 +4,7 @@ namespace DateRange\Core;
 
 use Exception;
 use mysqli;
+use mysqli_result;
 
 class Database
 {
@@ -34,7 +35,7 @@ class Database
             throw new Exception('Mysql error: '. $this->connection()->error);
         }
         $ret = true;
-        if ($result instanceof mysqli) {
+        if ($result instanceof mysqli_result) {
             $ret = $result->fetch_all(MYSQLI_ASSOC);
             $result->close();
         }

@@ -31,7 +31,7 @@ abstract class Controller
         if ($body instanceof ArraySerializable) {
             $body = $body->toArray();
         }
-        if (is_array($body)) {
+        if (!is_string($body)) {
             $body = json_encode($body, true);
         }
         return new Response($body, $status);

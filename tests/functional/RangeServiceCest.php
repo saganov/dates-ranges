@@ -15,16 +15,26 @@ class RangeServiceCest
     // tests
     public function listTest(FunctionalTester $I)
     {
+        $I->haveInDatabase('ranges', [
+            'start' => '2019-07-10',
+            'end' => '2019-07-21',
+            'price' => 15
+        ]);
+        $I->haveInDatabase('ranges', [
+            'start' => '2019-07-01',
+            'end' => '2019-07-05',
+            'price' => 25
+        ]);
         $I->assertEquals(
             [
                 [
-                    'start' => 'Y-m-d',
-                    'end' => 'Y-m-d',
+                    'start' => '2019-07-10',
+                    'end' => '2019-07-21',
                     'price' => 15
                 ],
                 [
-                    'start' => 'Y-m-d',
-                    'end' => 'Y-m-d',
+                    'start' => '2019-07-01',
+                    'end' => '2019-07-05',
                     'price' => 25
                 ]
             ],
