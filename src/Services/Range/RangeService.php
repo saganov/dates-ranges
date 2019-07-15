@@ -3,6 +3,7 @@
 namespace DateRange\Services\Range;
 
 use DateRange\Core\Database;
+use Exception;
 
 class RangeService
 {
@@ -17,5 +18,14 @@ class RangeService
     public function list()
     {
         return (new DbMapper($this->dbConnection))->list();
+    }
+
+    /**
+     * @param array $range
+     * @throws Exception
+     */
+    public function save(array $range)
+    {
+        (new DbMapper($this->dbConnection))->save($range);
     }
 }

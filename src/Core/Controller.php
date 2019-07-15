@@ -34,7 +34,7 @@ abstract class Controller
         if (!is_string($body)) {
             $body = json_encode($body, true);
         }
-        return new Response($body, $status);
+        return new Response($body, $status, ['Content-Type', 'application/json;charset=UTF-8']);
     }
 
     /**

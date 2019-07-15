@@ -30,6 +30,21 @@ class DbMapper
     }
 
     /**
+     * @param array $range
+     * @throws Exception
+     */
+    public function save(array $range)
+    {
+        $range = new Row($range);
+        $this->dbConnection->query(sprintf(
+            'INSERT INTO `ranges` (`start`, `end`, `price`) VALUES ("%s", "%s", %f)',
+            $range->get(self::START),
+            $range->get(self::END),
+            $range->get(self::PRICE)
+            ));
+    }
+
+    /**
      * @param array $data
      * @return Collection
      */

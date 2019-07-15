@@ -11,19 +11,20 @@ class RangesBaseCest
     // tests
     public function listTest(ApiTester $I)
     {
-        $I->sendGET('/api/v1/ranges/');
+        $I->sendGET('/ranges/');
         $I->seeResponseCodeIs(HttpCode::OK);
     }
 
     public function createTest(ApiTester $I)
     {
-        $I->sendPUT('/api/v1/ranges/');
-        $I->seeResponseCodeIs(HttpCode::OK);
+        $I->haveHttpHeader('Content-Type', 'application/json;charset=UTF-8');
+        $I->sendPUT('/ranges/', json_encode(['start' => '2019-06-01', 'end' => '2019-06-21', 'price' => 15.00]));
+        $I->seeResponseCodeIs(HttpCode::CREATED);
     }
 
     public function deleteTest(ApiTester $I)
     {
-        $I->sendDELETE('/api/v1/ranges/1');
-        $I->seeResponseCodeIs(HttpCode::OK);
+        $I->sendDELETE('/ranges/1');
+        $I->seeResponseCodeIs(HttpCode::NO_CONTENT);
     }
 }

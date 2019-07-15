@@ -5,6 +5,7 @@ namespace DateRange\Controllers;
 use DateRange\Core\Controller;
 use DateRange\Services\Range\RangeService;
 use Exception;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class Ranges extends Controller
@@ -19,17 +20,14 @@ class Ranges extends Controller
     }
 
     /**
+     * @param Request $request
      * @return Response
+     * @throws Exception
      */
-    public function save(): Response
+    public function save(Request $request): Response
     {
-        return $this->response([
-            [
-                'start' => 'Y-m-d',
-                'end' => 'Y-m-d',
-                'price' => 15,
-            ]
-        ]);
+        $this->rangeService()->save(json_decode($request->getContent(), true));
+        return $this->response(null, Response::HTTP_CREATED);
     }
 
     /**

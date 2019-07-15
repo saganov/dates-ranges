@@ -13,9 +13,6 @@ class AppRoutes
     private function config()
     {
         return [
-            '/' => [
-                'route_name' => ['GET', '/foo', 'MyController::foo'],
-            ],
             '/api/v1' => [
                 'get_ranges'   => ['GET',    '/ranges/',        'Ranges::list'],
                 'save_range'   => ['PUT',    '/ranges/',        'Ranges::save'],

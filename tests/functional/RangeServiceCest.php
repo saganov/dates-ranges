@@ -41,4 +41,15 @@ class RangeServiceCest
             $this->service->list()->toArray()
         );
     }
+
+    public function saveTest(FunctionalTester $I)
+    {
+        $range = [
+            'start' => '2019-07-10',
+            'end' => '2019-07-21',
+            'price' => 15
+        ];
+        $this->service->save($range);
+        $I->seeInDatabase('ranges', $range);
+    }
 }

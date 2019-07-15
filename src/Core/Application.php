@@ -7,6 +7,7 @@ use ReflectionException;
 use ReflectionMethod;
 use ReflectionParameter;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
@@ -42,7 +43,8 @@ class Application
             )->match($request->getPathInfo())
         );
         try {
-            $response = call_user_func($this->controller($request), $this->arguments($request));
+            /** @var Response $response */
+            $response = call_user_func_array($this->controller($request), $this->arguments($request));
             $response->prepare($request)->send();
         } catch (ResourceNotFoundException $e) {
             echo $e->getMessage();
@@ -72,7 +74,10 @@ class Application
         $arguments = array();
         foreach ($reflectionMethod->getParameters() as $param) {
             /* @var $param ReflectionParameter */
-            if ($request->attributes->has($param->getName())) {
+            $class = $param->getClass();
+            if ($class && $class->name === Request::class) {
+                $arguments[] = $request;
+            } elseif ($request->attributes->has($param->getName())) {
                 $arguments[] = $request->get($param->getName());
             } else {
                 $arguments[] = $param->getDefaultValue();
