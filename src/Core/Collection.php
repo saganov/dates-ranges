@@ -22,9 +22,9 @@ class Collection implements ArraySerializable
 
     /**
      * @param ArraySerializable $object
-     * @return $this
+     * @return Collection
      */
-    public function push(ArraySerializable $object)
+    public function push(ArraySerializable $object): Collection
     {
         $this->collection[] = $object;
         return $this;
@@ -34,7 +34,7 @@ class Collection implements ArraySerializable
      * @param array $objects
      * @return Collection
      */
-    public function pushArray(array $objects)
+    public function pushArray(array $objects): Collection
     {
         array_walk($objects, function (ArraySerializable $object) {
             $this->push($object);
@@ -44,10 +44,10 @@ class Collection implements ArraySerializable
 
     /**
      * @param Callable $callable
-     * @return $this
+     * @return Collection
      * @throws Exception
      */
-    public function walk($callable)
+    public function walk($callable): Collection
     {
         if (!is_callable($callable)) {
             throw new Exception('You should pass callable function to walk it trough collection');
@@ -63,7 +63,7 @@ class Collection implements ArraySerializable
      * @return Collection
      * @throws Exception
      */
-    public function map($callable)
+    public function map($callable): Collection
     {
         if (!is_callable($callable)) {
             throw new Exception('You should pass callable function to walk it trough collection');
@@ -74,7 +74,7 @@ class Collection implements ArraySerializable
     /**
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         $objectArray = [];
         foreach ($this->collection as $object) {
@@ -86,7 +86,7 @@ class Collection implements ArraySerializable
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return implode(', ', array_map(
             function ($object) {
@@ -112,7 +112,7 @@ class Collection implements ArraySerializable
     /**
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return count($this->collection);
     }

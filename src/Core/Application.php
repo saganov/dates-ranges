@@ -73,10 +73,13 @@ class Application
         $reflectionMethod = new ReflectionMethod($request->get('_controller'), $request->get('_action'));
         $arguments = array();
         foreach ($reflectionMethod->getParameters() as $param) {
-            /* @var $param ReflectionParameter */
+            /* @var ReflectionParameter $param */
             $class = $param->getClass();
-            if ($class && $class->name === Request::class) {
-                $arguments[] = $request;
+            if ($class && $class->implementsInterface(\DateRange\Core\Request::class)) {
+                $validator = $class->newInstance(json_decode($request->getContent(), true));
+                // TODO: add try/catch with HTTP 400 response in case of invalid request
+                $validator->validate();
+                $arguments[] = $validator;
             } elseif ($request->attributes->has($param->getName())) {
                 $arguments[] = $request->get($param->getName());
             } else {

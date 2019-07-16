@@ -77,13 +77,12 @@ class DbMapper
     }
 
     /**
-     * @param Row $row
+     * @param DbRange $range
      * @return Collection
      * @throws Exception
      */
-    public function listOfAffected(Row $row): Collection
+    public function listOfAffected(DbRange $range): Collection
     {
-        $range = $this->entity($row);
         return $this->collection(
             $this->dbConnection->query(
                 sprintf(
@@ -111,15 +110,12 @@ class DbMapper
 
     /**
      * @param Row $row
-     * @return Range
+     * @return DbRange
      * @throws Exception
      */
-    private function entity(Row $row): Range
+    private function entity(Row $row): DbRange
     {
-        if ($row->get(self::START) > $row->get(self::END)) {
-            throw new Exception('Start should be before end');
-        }
-        return new Range(
+        return new DbRange(
             $row->get(self::START),
             $row->get(self::END),
             $row->get(self::PRICE),

@@ -3,9 +3,9 @@
 namespace DateRange\Controllers;
 
 use DateRange\Core\Controller;
+use DateRange\Models\RangeRequest;
 use DateRange\Services\Range\RangeService;
 use Exception;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class Ranges extends Controller
@@ -20,13 +20,13 @@ class Ranges extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param RangeRequest $range
      * @return Response
      * @throws Exception
      */
-    public function save(Request $request): Response
+    public function save(RangeRequest $range): Response
     {
-        $this->rangeService()->save(json_decode($request->getContent(), true));
+        $this->rangeService()->save($range);
         return $this->response(null, Response::HTTP_CREATED);
     }
 

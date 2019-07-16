@@ -1,6 +1,7 @@
 <?php
 
 use DateRange\Core\Database;
+use DateRange\Models\RangeRequest;
 use DateRange\Services\Range\RangeService;
 
 class RangeServiceCest
@@ -49,7 +50,7 @@ class RangeServiceCest
             'end' => '2019-07-21',
             'price' => 15
         ];
-        $this->service->save($range);
+        $this->service->save(new RangeRequest($range));
         $I->seeInDatabase('ranges', $range);
     }
 }
