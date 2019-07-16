@@ -12,20 +12,44 @@ class ExampleFirstCest
     public function sequenceTest(AcceptanceTester $I)
     {
         // First Step
-        $I->sendPUT('/ranges/1/10/15');
-        $I->seeResponseCodeIs(HttpCode::OK);
-        // TODO: seeRecordsInDb([1,10,15]);
+        $I->sendPUT('/ranges/', json_encode(['start' => '2019-07-01', 'end' => '2019-07-10', 'price' => 15]));
+        $I->seeResponseCodeIs(HttpCode::CREATED);
+        $I->sendGET('/ranges/');
+        $I->assertEquals(
+            json_encode([['start' => '2019-07-01', 'end' => '2019-07-10', 'price' => 15]]),
+            $I->grabResponse()
+        );
         // Second Step
-        $I->sendPUT('/ranges/5/20/15');
-        $I->seeResponseCodeIs(HttpCode::OK);
-        // TODO: seeRecordsInDb([1,20,15]);
+        $I->sendPUT('/ranges/', json_encode(['start' => '2019-07-05', 'end' => '2019-07-20', 'price' => 15]));
+        $I->seeResponseCodeIs(HttpCode::CREATED);
+        $I->sendGET('/ranges/');
+        $I->assertEquals(
+            json_encode([['start' => '2019-07-01', 'end' => '2019-07-20', 'price' => 15]]),
+            $I->grabResponse()
+        );
         // Third Step
-        $I->sendPUT('/ranges/2/8/45');
-        $I->seeResponseCodeIs(HttpCode::OK);
-        // TODO: seeRecordsInDb([1,1,15], [2,8,45], [9,20,15]);
+        $I->sendPUT('/ranges/', json_encode(['start' => '2019-07-02', 'end' => '2019-07-08', 'price' => 45]));
+        $I->seeResponseCodeIs(HttpCode::CREATED);
+        $I->sendGET('/ranges/');
+        $I->assertEquals(
+            json_encode([
+                ['start' => '2019-07-01', 'end' => '2019-07-01', 'price' => 15],
+                ['start' => '2019-07-02', 'end' => '2019-07-08', 'price' => 45],
+                ['start' => '2019-07-09', 'end' => '2019-07-20', 'price' => 15],
+            ]),
+            $I->grabResponse()
+        );
         // Fourth Step
-        $I->sendPUT('/ranges/9/10/45');
-        $I->seeResponseCodeIs(HttpCode::OK);
-        // TODO: seeRecordsInDb([1,1,15], [2,10,45], [11,20,15]);
+        $I->sendPUT('/ranges/', json_encode(['start' => '2019-07-09', 'end' => '2019-07-10', 'price' => 45]));
+        $I->seeResponseCodeIs(HttpCode::CREATED);
+        $I->sendGET('/ranges/');
+        $I->assertEquals(
+            json_encode([
+                ['start' => '2019-07-01', 'end' => '2019-07-01', 'price' => 15],
+                ['start' => '2019-07-02', 'end' => '2019-07-10', 'price' => 45],
+                ['start' => '2019-07-11', 'end' => '2019-07-20', 'price' => 15],
+            ]),
+            $I->grabResponse()
+        );
     }
 }

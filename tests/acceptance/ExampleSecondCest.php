@@ -12,20 +12,47 @@ class ExampleSecondCest
     public function sequenceTest(AcceptanceTester $I)
     {
         // First Step
-        $I->sendPUT('/ranges/1/5/15');
-        $I->seeResponseCodeIs(HttpCode::OK);
-        // TODO: seeRecordsInDb([1,5,15]);
+        $I->sendPUT('/ranges/', json_encode(['start' => '2019-07-01', 'end' => '2019-07-05', 'price' => 15]));
+        $I->seeResponseCodeIs(HttpCode::CREATED);
+        $I->sendGET('/ranges/');
+        $I->assertEquals(
+            json_encode([
+                ['start' => '2019-07-01', 'end' => '2019-07-05', 'price' => 15],
+            ]),
+            $I->grabResponse()
+        );
         // Second Step
-        $I->sendPUT('/ranges/20/25/15');
-        $I->seeResponseCodeIs(HttpCode::OK);
-        // TODO: seeRecordsInDb([1,5,15], [20,25,15]);
+        $I->sendPUT('/ranges/', json_encode(['start' => '2019-07-20', 'end' => '2019-07-25', 'price' => 15]));
+        $I->seeResponseCodeIs(HttpCode::CREATED);
+        $I->sendGET('/ranges/');
+        $I->assertEquals(
+            json_encode([
+                ['start' => '2019-07-01', 'end' => '2019-07-05', 'price' => 15],
+                ['start' => '2019-07-20', 'end' => '2019-07-25', 'price' => 15],
+            ]),
+            $I->grabResponse()
+        );
         // Third Step
-        $I->sendPUT('/ranges/4/21/45');
-        $I->seeResponseCodeIs(HttpCode::OK);
-        // TODO: seeRecordsInDb([1,3,15], [4,21,45], [22,25,15]);
+        $I->sendPUT('/ranges/', json_encode(['start' => '2019-07-04', 'end' => '2019-07-21', 'price' => 45]));
+        $I->seeResponseCodeIs(HttpCode::CREATED);
+        $I->sendGET('/ranges/');
+        $I->assertEquals(
+            json_encode([
+                ['start' => '2019-07-01', 'end' => '2019-07-03', 'price' => 15],
+                ['start' => '2019-07-04', 'end' => '2019-07-21', 'price' => 45],
+                ['start' => '2019-07-22', 'end' => '2019-07-25', 'price' => 15],
+            ]),
+            $I->grabResponse()
+        );
         // Fourth Step
-        $I->sendPUT('/ranges/3/21/15');
-        $I->seeResponseCodeIs(HttpCode::OK);
-        // TODO: seeRecordsInDb([1,25,15]);
+        $I->sendPUT('/ranges/', json_encode(['start' => '2019-07-03', 'end' => '2019-07-21', 'price' => 15]));
+        $I->seeResponseCodeIs(HttpCode::CREATED);
+        $I->sendGET('/ranges/');
+        $I->assertEquals(
+            json_encode([
+                ['start' => '2019-07-01', 'end' => '2019-07-25', 'price' => 15],
+            ]),
+            $I->grabResponse()
+        );
     }
 }

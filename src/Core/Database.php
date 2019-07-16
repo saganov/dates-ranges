@@ -32,7 +32,7 @@ class Database
     {
         $result = $this->connection()->query($sql);
         if (false === $result) {
-            throw new Exception('Mysql error: '. $this->connection()->error);
+            throw new Exception('Mysql error: '. $this->connection()->error . '. SQL: '. $sql);
         }
         $ret = true;
         if ($result instanceof mysqli_result) {

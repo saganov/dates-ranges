@@ -52,7 +52,8 @@ jobs:
 #          paths:
 #            - node_modules
 
-      - run: docker-php-ext-install mysqli # && docker-php-ext-enable mysqli
+      #- run: docker-php-ext-install mysqli # && docker-php-ext-enable mysqli
+      #- run: apt-get install php7-mysqlnd
       # prepare the database
       #- run: touch storage/testing.sqlite
       #- run: php artisan migrate --env=testing --database=sqlite_testing --force

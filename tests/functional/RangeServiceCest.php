@@ -28,15 +28,15 @@ class RangeServiceCest
         $I->assertEquals(
             [
                 [
+                    'start' => '2019-07-01',
+                    'end' => '2019-07-05',
+                    'price' => 25
+                ],
+                [
                     'start' => '2019-07-10',
                     'end' => '2019-07-21',
                     'price' => 15
                 ],
-                [
-                    'start' => '2019-07-01',
-                    'end' => '2019-07-05',
-                    'price' => 25
-                ]
             ],
             $this->service->list()->toArray()
         );
