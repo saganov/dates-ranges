@@ -9,7 +9,7 @@ class RangeServiceCest
     private $service;
     public function _before(FunctionalTester $I)
     {
-        $this->service = new RangeService(new Database('mysql://root:root@localhost/ranges'));
+        $this->service = new RangeService(new Database('mysql://root:root@127.0.0.1/ranges'));
     }
 
     // tests
