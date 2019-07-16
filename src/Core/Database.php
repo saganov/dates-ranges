@@ -4,7 +4,8 @@ namespace DateRange\Core;
 
 use Exception;
 use mysqli;
-use mysqli_result;
+use PDO;
+use PDOException;
 
 class Database
 {
@@ -25,33 +26,46 @@ class Database
 
     /**
      * @param $sql
+     * @param array $placeholders
      * @return bool|array
      * @throws Exception
      */
-    public function query($sql)
+    public function query($sql, $placeholders = [])
     {
-        $result = $this->connection()->query($sql);
+        if (!count($placeholders)) {
+            $result = $this->connection()->query($sql)->fetchAll();
+        } else {
+            $stmt = $this->connection()->prepare($sql);
+            $stmt->execute($placeholders);
+            $result = $stmt->fetchAll();
+        }
         if (false === $result) {
             throw new Exception('Mysql error: '. $this->connection()->error . '. SQL: '. $sql);
         }
-        $ret = true;
-        if ($result instanceof mysqli_result) {
-            $ret = $result->fetch_all(MYSQLI_ASSOC);
-            $result->close();
-        }
-        return $ret;
+        return $result;
     }
 
     /**
-     * @return mysqli
+     * @return PDO
      * @throws Exception
      */
-    private function connection(): mysqli
+    private function connection(): PDO
     {
         if (!$this->connection) {
-            $this->connection = new mysqli($this->host(), $this->user(), $this->password(), $this->database());
-            if ($this->connection->connect_errno) {
-                echo "Failed to connect to MySQL: (" . $this->connection->connect_errno . ") " . $this->connection->connect_error;
+//            $this->connection = new mysqli($this->host(), $this->user(), $this->password(), $this->database());
+//            if ($this->connection->connect_errno) {
+//                echo "Failed to connect to MySQL: (" . $this->connection->connect_errno . ") " . $this->connection->connect_error;
+//            }
+            $dsn = "mysql:host={$this->host()};dbname={$this->database()};charset=utf8mb4";
+            $options = [
+                PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                PDO::ATTR_EMULATE_PREPARES   => false,
+            ];
+            try {
+                $this->connection = new PDO($dsn, $this->user(), $this->password(), $options);
+            } catch (PDOException $e) {
+                throw new PDOException($e->getMessage(), (int)$e->getCode());
             }
         }
         return $this->connection;
@@ -117,15 +131,5 @@ class Database
             throw new Exception('Unable to parse MySQL url string');
         }
         return $component;
-    }
-
-    /**
-     * Close the MySQL connection if it is opened
-     */
-    public function __destruct()
-    {
-        if ($this->connection) {
-            $this->connection->close();
-        }
     }
 }
