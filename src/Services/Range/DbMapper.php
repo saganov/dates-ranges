@@ -31,17 +31,15 @@ class DbMapper
     }
 
     /**
-     * @param Row $row
+     * @param Collection $ranges
      * @throws Exception
      */
-    public function insert(Row $row): void
+    public function insert(Collection $ranges): void
     {
         // TODO: reimplement to use collections
         $this->dbConnection->query(sprintf(
-            'INSERT INTO `ranges` (`start`, `end`, `price`) VALUES ("%s", "%s", %f)',
-            $row->get(self::START),
-            $row->get(self::END),
-            $row->get(self::PRICE)
+            'INSERT INTO `ranges` (`id`, `start`, `end`, `price`) VALUES %s',
+            (string)$ranges
             ));
     }
 
@@ -56,12 +54,7 @@ class DbMapper
                 sprintf(
                     'INSERT INTO `ranges` (`id`, `start`, `end`, `price`) VALUES %s
                             ON DUPLICATE KEY UPDATE `start` = VALUES(`start`), `end` = VALUES(`end`), `price` = VALUES(`price`)',
-                    implode(
-                        ', ',
-                        $ranges->map(function (Range $range) {
-                            return new RangeSqlValue($range);
-                        })->column('value')
-                    )
+                    (string)$ranges
                 )
             );
         }

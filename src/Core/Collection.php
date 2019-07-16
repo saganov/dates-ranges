@@ -31,6 +31,18 @@ class Collection implements ArraySerializable
     }
 
     /**
+     * @param array $objects
+     * @return Collection
+     */
+    public function pushArray(array $objects)
+    {
+        array_walk($objects, function (ArraySerializable $object) {
+            $this->push($object);
+        });
+        return $this;
+    }
+
+    /**
      * @param Callable $callable
      * @return $this
      * @throws Exception
@@ -69,6 +81,19 @@ class Collection implements ArraySerializable
             $objectArray[] = $object->toArray();
         }
         return $objectArray;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return implode(', ', array_map(
+            function ($object) {
+                return (string)$object;
+            },
+            $this->collection
+            ));
     }
 
     /**

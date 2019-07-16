@@ -51,16 +51,25 @@ class Range implements ArraySerializable
         return $this->id;
     }
 
+    /**
+     * @return string Start date (Y-m-d)
+     */
     public function start()
     {
         return $this->start;
     }
 
+    /**
+     * @return string End date (Y-m-d)
+     */
     public function end()
     {
         return $this->end;
     }
 
+    /**
+     * @return float
+     */
     public function price()
     {
         return $this->price;
@@ -94,6 +103,14 @@ class Range implements ArraySerializable
             self::END   => $this->end,
             self::PRICE => $this->price,
         ];
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return sprintf('(%d, "%s", "%s", %f)', $this->id, $this->start, $this->end, $this->price);
     }
 
     /**

@@ -37,16 +37,14 @@ class RangeService
         $row = new Row($range);
         // TODO: Make the shared builder
         $master = new Range($row->get('start'), $row->get('end'), $row->get('price'));
-        $this->mapper()->listOfAffected($row)->walk(function (Range $affectedRange, $key) use (&$master, &$toCreate, &$toDelete, &$toUpdate) {
+        $this->mapper()->listOfAffected($row)->walk(function (Range $affectedRange, $key) use (&$master, $toCreate, $toDelete, $toUpdate) {
             switch ($affectedRange->affectMode($master)) {
                 case Range::AFFECT_MODE_MERGE:
                     $master = $affectedRange->merge($master);
                     $toDelete->push($affectedRange);
                     break;
                 case Range::AFFECT_MODE_SPLIT:
-                    $splitted = $affectedRange->split($master);
-                    $toCreate->push($splitted[0]);
-                    $toCreate->push($splitted[1]);
+                    $toCreate->pushArray($affectedRange->split($master));
                     $toDelete->push($affectedRange);
                     break;
                 case Range::AFFECT_MODE_CUT_TAIL:
@@ -65,7 +63,7 @@ class RangeService
         $toCreate->push($master);
         $this->mapper()->delete($toDelete);
         $this->mapper()->save($toUpdate);
-        $this->mapper()->save($toCreate);
+        $this->mapper()->insert($toCreate);
     }
 
     /**
