@@ -2,14 +2,14 @@
 Test Task to complete for Senior Backend Engineer (Remote) role at Cloudbeds
 
 ## Requirements
-User is able to specify price depending on the dates. i.e. set the price $x for the
+1. User is able to specify price depending on the dates. i.e. set the price $x for the
 dates range $startDate - $endDate. Let’s call such ranges as intervals.
-User can add as many intervals as he wants (using any start/end date).
-System can’t have crossing intervals.
-New interval price have higher priority over existing ones.
-New interval can’t lead to changes in dates not belonged to its dates range.
-If user tries to save interval that interferes with existing ones in DB, system has to apply last user changes and modify other intervals in order to apply requirement 3.
-Any intervals with the same price that can be merged (without gaps between)
+1. User can add as many intervals as he wants (using any start/end date).
+1. System can’t have crossing intervals.
+1. New interval price have higher priority over existing ones.
+1. New interval can’t lead to changes in dates not belonged to its dates range.
+1. If user tries to save interval that interferes with existing ones in DB, system has to apply last user changes and modify other intervals in order to apply requirement 3.
+1. Any intervals with the same price that can be merged (without gaps between)
 should be merged.
 
 ## DB
