@@ -14,9 +14,9 @@ class AppRoutes
     {
         return [
             '/api/v1' => [
-                'get_ranges'   => ['GET',    '/ranges/',        'Ranges::list'],
-                'save_range'   => ['PUT',    '/ranges/',        'Ranges::save'],
-                'delete_range' => ['DELETE', '/ranges/{range}', 'Ranges::delete'],
+                'get_ranges'   => ['GET',    '/ranges/', 'Ranges::list'],
+                'save_range'   => ['PUT',    '/ranges/', 'Ranges::save'],
+                'delete_range' => ['DELETE', '/ranges/', 'Ranges::delete'],
             ]
         ];
     }

@@ -36,7 +36,6 @@ class DbMapper
      */
     public function insert(Collection $ranges): void
     {
-        // TODO: reimplement to use collections
         $this->dbConnection->query(sprintf(
             'INSERT INTO `ranges` (`id`, `start`, `end`, `price`) VALUES %s',
             (string)$ranges
@@ -64,7 +63,7 @@ class DbMapper
      * @param Collection $ranges
      * @throws Exception
      */
-    public function delete(Collection $ranges)
+    public function deleteList(Collection $ranges)
     {
         if ($ranges->count()) {
             $this->dbConnection->query(
@@ -74,6 +73,21 @@ class DbMapper
                 )
             );
         }
+    }
+
+    /**
+     * @param Range $range
+     * @throws Exception
+     */
+    public function delete(Range $range): void
+    {
+        $this->dbConnection->query(
+            sprintf(
+                'DELETE FROM `ranges` WHERE `start` = "%s" AND `end` = "%s"',
+                $range->start(),
+                $range->end()
+            )
+        );
     }
 
     /**

@@ -14,11 +14,19 @@ class RangeService
     /** @var DbMapper */
     private $mapper;
 
+    /**
+     * RangeService constructor.
+     * @param Database $connection
+     */
     public function __construct(Database $connection)
     {
         $this->dbConnection = $connection;
     }
 
+    /**
+     * @return Collection
+     * @throws Exception
+     */
     public function list()
     {
         return $this->mapper()->list();
@@ -58,9 +66,18 @@ class RangeService
             }
         });
         $toCreate->push($master);
-        $this->mapper()->delete($toDelete);
+        $this->mapper()->deleteList($toDelete);
         $this->mapper()->save($toUpdate);
         $this->mapper()->insert($toCreate);
+    }
+
+    /**
+     * @param Range $range
+     * @throws Exception
+     */
+    public function delete(Range $range): void
+    {
+        $this->mapper()->delete($range);
     }
 
     /**

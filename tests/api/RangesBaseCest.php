@@ -24,7 +24,7 @@ class RangesBaseCest
 
     public function deleteTest(ApiTester $I)
     {
-        $I->sendDELETE('/ranges/1');
+        $I->sendDELETE('/ranges/', json_encode(['start' => '2019-06-01', 'end' => '2019-06-21', 'price' => 15.00]));
         $I->seeResponseCodeIs(HttpCode::NO_CONTENT);
     }
 }

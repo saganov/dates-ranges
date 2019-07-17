@@ -31,11 +31,13 @@ class Ranges extends Controller
     }
 
     /**
-     * @param $range
+     * @param RangeRequest $range
      * @return Response
+     * @throws Exception
      */
-    public function delete($range): Response
+    public function delete(RangeRequest $range): Response
     {
+        $this->rangeService()->delete($range);
         return $this->response(null, Response::HTTP_NO_CONTENT);
     }
 

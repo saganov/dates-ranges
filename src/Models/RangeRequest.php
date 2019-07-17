@@ -43,14 +43,6 @@ class RangeRequest extends BaseRequest implements Range
     }
 
     /**
-     * @return int|null
-     */
-    public function identifier(): ?int
-    {
-        return null;
-    }
-
-    /**
      * @return string Start date (Y-m-d)
      */
     public function start(): string

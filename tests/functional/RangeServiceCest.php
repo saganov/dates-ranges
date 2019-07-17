@@ -53,4 +53,30 @@ class RangeServiceCest
         $this->service->save(new RangeRequest($range));
         $I->seeInDatabase('ranges', $range);
     }
+
+    public function deleteTest(FunctionalTester $I)
+    {
+        $first = [
+            'start' => '2019-07-10',
+            'end' => '2019-07-15',
+            'price' => 15
+        ];
+        $second = [
+            'start' => '2019-07-18',
+            'end' => '2019-07-21',
+            'price' => 45
+        ];
+        $third = [
+            'start' => '2019-08-01',
+            'end' => '2019-08-05',
+            'price' => 25
+        ];
+        $I->haveInDatabase('ranges', $first);
+        $I->haveInDatabase('ranges', $second);
+        $I->haveInDatabase('ranges', $third);
+        $this->service->delete(new RangeRequest($second));
+        $I->seeInDatabase('ranges', $first);
+        $I->dontSeeInDatabase('ranges', $second);
+        $I->seeInDatabase('ranges', $third);
+    }
 }
