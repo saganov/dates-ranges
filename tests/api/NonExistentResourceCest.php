@@ -14,6 +14,6 @@ class NonExistentResourceCest
         $I->sendGET('/wrong-resource/');
         $I->seeResponseCodeIs(HttpCode::NOT_FOUND);
         $I->seeResponseIsJson();
-        //$I->seeResponseJsonMatchesJsonPath('$.message');
+        $I->seeResponseJsonMatchesJsonPath('$.message');
     }
 }
