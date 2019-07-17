@@ -3,9 +3,9 @@
 namespace DateRange\Models;
 
 use DateRange\Core\BaseRequest;
+use DateRange\Core\InvalidRequestException;
 use DateRange\Services\Range\Range;
 use DateTime;
-use Exception;
 
 class RangeRequest extends BaseRequest implements Range
 {
@@ -14,7 +14,7 @@ class RangeRequest extends BaseRequest implements Range
     private const PRICE = 'price';
 
     /**
-     * @throws Exception
+     * @throws InvalidRequestException
      */
     public function validate(): void
     {
@@ -22,8 +22,7 @@ class RangeRequest extends BaseRequest implements Range
         foreach ([self::START, self::END, self::PRICE] as $field) {
             if (!$this->has($field)) {
                 $errors[] = sprintf('Missed mandatory field: %s', $field);
-            }
-            if (empty($this->get($field))) {
+            } elseif (empty($this->get($field))) {
                 $errors[] = sprintf('Field %s must have value', $field);
             }
         }
@@ -39,7 +38,7 @@ class RangeRequest extends BaseRequest implements Range
             $errors[] = 'Start have to be be before end';
         }
         if (count($errors)) {
-            throw new Exception('Invalid request. '. implode ('. ', $errors));
+            throw new InvalidRequestException('Invalid request. '. implode ('. ', $errors));
         }
     }
 

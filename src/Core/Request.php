@@ -2,12 +2,10 @@
 
 namespace DateRange\Core;
 
-use Exception;
-
 interface Request
 {
     /**
-     * @throws Exception
+     * @throws InvalidRequestException
      */
     public function validate(): void;
 }

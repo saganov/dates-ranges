@@ -2,12 +2,10 @@
 
 namespace DateRange\Core;
 
-use Exception;
-
 abstract class BaseRequest extends Row implements Request
 {
     /**
-     * @throws Exception
+     * @throws InvalidRequestException
      */
     abstract public function validate(): void;
 }
