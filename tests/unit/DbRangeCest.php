@@ -1,8 +1,8 @@
 <?php
 
 use Codeception\Example;
-use DateRange\Models\RangeRequest;
 use DateRange\Services\Range\DbRange;
+use Tests\Helper\DateRanges\Range;
 
 class DbRangeCest
 {
@@ -18,18 +18,8 @@ class DbRangeCest
      */
     public function affectModeNoneTest(UnitTester $I, Example $example)
     {
-        // TODO: Replace RangeRequest with the mock
         $dbRange = new DbRange('2019-07-10', '2019-07-21', 15);
-        $I->assertEquals(
-            DbRange::AFFECT_MODE_NONE,
-            $dbRange->affectMode(
-                new RangeRequest([
-                    'start' => $example['start'],
-                    'end'   => $example['end'],
-                    'price' => $example['price']
-                ])
-            )
-        );
+        $I->assertEquals(DbRange::AFFECT_MODE_NONE, $dbRange->affectMode(new Range($example)));
     }
 
     /**
@@ -42,18 +32,8 @@ class DbRangeCest
      */
     public function affectModeMergeTest(UnitTester $I, Example $example)
     {
-        // TODO: Replace RangeRequest with the mock
         $dbRange = new DbRange('2019-07-10', '2019-07-21', 15);
-        $I->assertEquals(
-            DbRange::AFFECT_MODE_MERGE,
-            $dbRange->affectMode(
-                new RangeRequest([
-                    'start' => $example['start'],
-                    'end'   => $example['end'],
-                    'price' => $example['price']
-                ])
-            )
-        );
+        $I->assertEquals(DbRange::AFFECT_MODE_MERGE, $dbRange->affectMode(new Range($example)));
     }
 
     /**
@@ -64,18 +44,8 @@ class DbRangeCest
      */
     public function affectModeSplitTest(UnitTester $I, Example $example)
     {
-        // TODO: Replace RangeRequest with the mock
         $dbRange = new DbRange('2019-07-10', '2019-07-21', 15);
-        $I->assertEquals(
-            DbRange::AFFECT_MODE_SPLIT,
-            $dbRange->affectMode(
-                new RangeRequest([
-                    'start' => $example['start'],
-                    'end'   => $example['end'],
-                    'price' => $example['price']
-                ])
-            )
-        );
+        $I->assertEquals(DbRange::AFFECT_MODE_SPLIT, $dbRange->affectMode(new Range($example)));
     }
 
     /**
@@ -88,18 +58,8 @@ class DbRangeCest
      */
     public function affectModeCutTailTest(UnitTester $I, Example $example)
     {
-        // TODO: Replace RangeRequest with the mock
         $dbRange = new DbRange('2019-07-10', '2019-07-21', 15);
-        $I->assertEquals(
-            DbRange::AFFECT_MODE_CUT_TAIL,
-            $dbRange->affectMode(
-                new RangeRequest([
-                    'start' => $example['start'],
-                    'end'   => $example['end'],
-                    'price' => $example['price']
-                ])
-            )
-        );
+        $I->assertEquals(DbRange::AFFECT_MODE_CUT_TAIL, $dbRange->affectMode(new Range($example)));
     }
 
     /**
@@ -109,18 +69,8 @@ class DbRangeCest
      */
     public function affectModeCutHeadTest(UnitTester $I, Example $example)
     {
-        // TODO: Replace RangeRequest with the mock
         $dbRange = new DbRange('2019-07-10', '2019-07-21', 15);
-        $I->assertEquals(
-            DbRange::AFFECT_MODE_CUT_HEAD,
-            $dbRange->affectMode(
-                new RangeRequest([
-                    'start' => $example['start'],
-                    'end'   => $example['end'],
-                    'price' => $example['price']
-                ])
-            )
-        );
+        $I->assertEquals(DbRange::AFFECT_MODE_CUT_HEAD, $dbRange->affectMode(new Range($example)));
     }
 
     /**
@@ -134,17 +84,7 @@ class DbRangeCest
      */
     public function affectModeHideTest(UnitTester $I, Example $example)
     {
-        // TODO: Replace RangeRequest with the mock
         $dbRange = new DbRange('2019-07-10', '2019-07-21', 15);
-        $I->assertEquals(
-            DbRange::AFFECT_MODE_HIDE,
-            $dbRange->affectMode(
-                new RangeRequest([
-                    'start' => $example['start'],
-                    'end'   => $example['end'],
-                    'price' => $example['price']
-                ])
-            )
-        );
+        $I->assertEquals(DbRange::AFFECT_MODE_HIDE, $dbRange->affectMode(new Range($example)));
     }
 }

@@ -19,6 +19,11 @@
             "DateRange\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/_support"
+        }
+    },
     "config": {
         "preferred-install": "dist",
         "sort-packages": true,
