@@ -24,7 +24,11 @@
                         del(e.target);
                     }
                 });
-
+                document.getElementById('reset').onclick = function (e) {
+                    if (window.confirm('Press "OK" to remove all ranges in DB or "Cancel" to discard resetting')) {
+                        reset();
+                    }
+                };
             },
             'error': function () {
                 console.error('Ranges retrieving fail');
@@ -91,6 +95,20 @@
             },
             'error': function () {
                 console.error('Ranges deleting fail');
+            }
+        };
+        apiCall(request);
+    };
+
+    let reset = function() {
+        const request = {
+            'method': 'DELETE',
+            'url': '/api/v1/ranges/',
+            'action': function () {
+                init();
+            },
+            'error': function () {
+                console.error('Range resetting fail');
             }
         };
         apiCall(request);
