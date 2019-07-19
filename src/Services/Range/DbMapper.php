@@ -91,6 +91,14 @@ class DbMapper
     }
 
     /**
+     * @throws Exception
+     */
+    public function deleteAll(): void
+    {
+        $this->dbConnection->query('DELETE FROM `ranges`');
+    }
+
+    /**
      * @param DbRange $range
      * @return Collection
      * @throws Exception

@@ -97,10 +97,16 @@ class Application
             /* @var ReflectionParameter $param */
             $class = $param->getClass();
             if ($class && $class->implementsInterface(RequestCore::class)) {
-                /** @var RequestCore $validator */
-                $validator = $class->newInstance(json_decode($request->getContent(), true));
-                $validator->validate();
-                $arguments[] = $validator;
+                if ($request->getContent()) {
+                    /** @var RequestCore $clientRequest */
+                    $clientRequest = $class->newInstance(json_decode($request->getContent(), true));
+                    $clientRequest->validate();
+                    $arguments[] = $clientRequest;
+                } elseif ($param->allowsNull()) {
+                    $arguments[] = null;
+                } else {
+                    throw new InvalidRequestException('Request body is required');
+                }
             } elseif ($request->attributes->has($param->getName())) {
                 $arguments[] = $request->get($param->getName());
             } else {

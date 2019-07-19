@@ -72,12 +72,12 @@ class RangeService
     }
 
     /**
-     * @param Range $range
+     * @param Range|null $range
      * @throws Exception
      */
-    public function delete(Range $range): void
+    public function delete(?Range $range = null): void
     {
-        $this->mapper()->delete($range);
+        $range ? $this->mapper()->delete($range) : $this->mapper()->deleteAll();
     }
 
     /**
