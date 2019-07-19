@@ -52,4 +52,5 @@ jobs:
       - run: cp tests/acceptance.suite.example.yml tests/acceptance.suite.yml
       - run: cp tests/api.suite.example.yml tests/api.suite.yml
       - run: cp tests/functional.suite.example.yml tests/functional.suite.yml
+      - run: cp tests/unit.suite.example.yml tests/unit.suite.yml
       - run: ./vendor/bin/codecept run
